@@ -2,9 +2,13 @@ package com.example.andriodservicesuse;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     int count=0;
 
     private Intent serviceIntent;
-
+    private MyService myService;
+    private boolean isServiceBound;
+    private ServiceConnection serviceConnection;
     private boolean mStopLoop;
 
     @Override
@@ -55,21 +61,44 @@ public class MainActivity extends AppCompatActivity {
         bindserviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (serviceConnection==null){
+                    serviceConnection=new ServiceConnection() {
+                        @Override
+                        public void onServiceConnected(ComponentName name, IBinder iBinder) {
+                            MyService.MyServiceBinder myServiceBinder=(MyService.MyServiceBinder)iBinder;
+                            myService=myServiceBinder.getService();
+                            isServiceBound=true;
+                        }
 
+                        @Override
+                        public void onServiceDisconnected(ComponentName name) {
+                                isServiceBound=false;
+                        }
+                    };
+                }
+                bindService(serviceIntent,serviceConnection, Context.BIND_AUTO_CREATE);
             }
         });
 
         unBindServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (isServiceBound){
+                    unbindService(serviceConnection);
+                    isServiceBound=false;
+                }
             }
         });
 
         getRandomNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                if (isServiceBound){
+                    textView.setText("Random number: "+myService.getRandomNumber());
+                }else
+                {
+                    textView.setText("Service not bound");
+                }
             }
         });
 

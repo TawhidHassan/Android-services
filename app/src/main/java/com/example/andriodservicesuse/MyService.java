@@ -73,7 +73,7 @@ public class MyService extends Service {
         mIsRandomGenaratoron=false;
     }
 
-    private int getRandomNumber(){
+    int getRandomNumber(){
         return mRandomNumber;
     }
 
