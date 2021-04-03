@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static  final String TAG=MainActivity.class.getSimpleName();
     TextView textView;
-    Button startButton,stopButton;
+    Button startButton,stopButton,bindserviceButton,unBindServiceButton,getRandomNumber;
     int count=0;
 
     private Intent serviceIntent;
@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         textView=findViewById(R.id.textView);
         startButton=findViewById(R.id.button);
         stopButton=findViewById(R.id.button2);
+        bindserviceButton=findViewById(R.id.button3);
+        unBindServiceButton=findViewById(R.id.button4);
+        getRandomNumber=findViewById(R.id.button5);
 
         serviceIntent=new Intent(getApplicationContext(),MyService.class);
 
@@ -45,6 +48,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopService(serviceIntent);
+            }
+        });
+
+
+        bindserviceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        unBindServiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        getRandomNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
             }
         });
 
